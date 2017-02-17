@@ -23,7 +23,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.ArrayList;
+
 public class TestActivity extends AppCompatActivity {
+
 
     GoogleApiClient mGoogleApiClient;
     int RC_SIGN_IN = 1;
@@ -34,6 +37,7 @@ public class TestActivity extends AppCompatActivity {
     String TAG = "Google signm in";
     TextView mStatus;
     String statusString = "status";
+    public static  String userID ="";
 
 
     @Override
@@ -68,6 +72,7 @@ public class TestActivity extends AppCompatActivity {
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
 
                     setStatus("Signed inn as \n " + user.getEmail(), false);
+                    userID=user.getUid();
 
                 } else {
                     // User is signed out
@@ -153,6 +158,26 @@ public class TestActivity extends AppCompatActivity {
                 });
     }
 
+
+    public void testButton1OnClick(View v){
+
+        TutorGeneralInfo tutorGeneralInfo =new TutorGeneralInfo();
+        tutorGeneralInfo.setTutorAge(25);
+        tutorGeneralInfo.setTutorEducation("B.E");
+        tutorGeneralInfo.setTutorGender("Male");
+        tutorGeneralInfo.setTutorName("Priyank Choudhary");
+        tutorGeneralInfo.setTutorPoint(10);
+        tutorGeneralInfo.setTutorProfilePicture("some link");
+        tutorGeneralInfo.setTutorRating(4.5f);
+        tutorGeneralInfo.setTutorID(userID);
+        ArrayList<String> arrayList =new ArrayList<String>();
+        arrayList.add("Math");
+        tutorGeneralInfo.setTutorSubject(arrayList);
+
+
+        tutorGeneralInfo.postTutorGeneralInfo(tutorGeneralInfo);
+
+    }
 
     @Override
     public void onStart() {

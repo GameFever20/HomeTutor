@@ -1,6 +1,10 @@
 package com.example.gamef.hometutor;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by gamef on 17-02-2017.
@@ -11,9 +15,13 @@ public class TutorGeneralInfo {
     private String tutorName , tutorEducation ,tutorGender ,tutorID ,tutorProfilePicture ;
     private float tutorRating ;
     private int tutorAge;
-    private String[] tutorSubject;
+    private int tutorPoint;
+    private List<String> tutorSubject;
 
-    public TutorGeneralInfo(String tutorEducation, String tutorName, String tutorGender, String tutorID, String tutorProfilePicture, float tutorRating, int tutorAge, String[] tutorSubject) {
+
+
+
+    public TutorGeneralInfo(String tutorEducation, String tutorName, String tutorGender, String tutorID, String tutorProfilePicture, float tutorRating, int tutorAge, List<String> tutorSubject) {
         this.tutorEducation = tutorEducation;
         this.tutorName = tutorName;
         this.tutorGender = tutorGender;
@@ -27,15 +35,22 @@ public class TutorGeneralInfo {
     public TutorGeneralInfo() {
     }
 
+    public int getTutorPoint() {
+        return tutorPoint;
+    }
 
-    public String[] getTutorSubject() {
+    public void setTutorPoint(int tutorPoint) {
+        this.tutorPoint = tutorPoint;
+    }
+
+
+    public List<String> getTutorSubject() {
         return tutorSubject;
     }
 
-    public void setTutorSubject(String[] tutorSubject) {
+    public void setTutorSubject(List<String> tutorSubject) {
         this.tutorSubject = tutorSubject;
     }
-
 
     public String getTutorName() {
         return tutorName;
@@ -122,8 +137,16 @@ public class TutorGeneralInfo {
 
     }
 
-    public void postTutorGeneralInfo(){
+    public void postTutorGeneralInfo(TutorGeneralInfo tutorGeneralInfo){
         /*post new  Tutor informatiuon in database at desired place*/
+
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("tutorGeneralInfo/"+tutorGeneralInfo.getTutorID());
+
+
+        myRef.setValue(tutorGeneralInfo);
+
 
     }
 
@@ -157,7 +180,6 @@ public class TutorGeneralInfo {
 
 
     }
-
 
 
 
