@@ -179,6 +179,31 @@ public class TestActivity extends AppCompatActivity {
 
     }
 
+    public void testButton2OnClick(View view){
+
+        TutorGeneralInfo tutorGeneralInfo =new TutorGeneralInfo();
+        tutorGeneralInfo.getTutorGeneralInfo(userID , mStatus ,this);
+
+
+
+    }
+
+    public void testButton3OnClick(View view){
+
+        TutorGeneralInfo tutorGeneralInfo =new TutorGeneralInfo();
+        tutorGeneralInfo.getTutorList(this);
+
+
+
+    }
+
+
+
+    public void updateFromGetTutorGnInfo(TutorGeneralInfo tutor){
+        setStatus("Tutor : "+tutor.getTutorName()+"\n"+tutor.getTutorID()+"\n"+tutor.getTutorGender()+"\n"+tutor.getTutorAge() ,true);
+
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -193,4 +218,13 @@ public class TestActivity extends AppCompatActivity {
         }
     }
 
+    public void updateFromGetTutorList(ArrayList<TutorGeneralInfo> tutorArraylist) {
+
+        for (TutorGeneralInfo tutor : tutorArraylist){
+            setStatus("Tutor : "+tutor.getTutorName()+"\n"+tutor.getTutorID()+"\n"+tutor.getTutorGender()+"\n"+tutor.getTutorAge() ,true);
+
+        }
+
+
+    }
 }

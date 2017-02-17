@@ -1,10 +1,19 @@
 package com.example.gamef.hometutor;
 
+import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by gamef on 17-02-2017.
@@ -112,10 +121,39 @@ public class TutorGeneralInfo {
 
     //MEthods for class
 
-    public ArrayList<TutorGeneralInfo> getTutorList(){
+    public ArrayList<TutorGeneralInfo> getTutorList(final TestActivity activity){
 
         /*return list of all tutor from database whose profile are active
         * number of profile can be limited by using int parameter*/
+
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("tutorGeneralInfo");
+
+        DatabaseReference myRef2 = myRef.orderByChild("tutorPoint").limitToFirst(20).getRef();
+
+        myRef2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                ArrayList<TutorGeneralInfo> tutorArrayList =new ArrayList<TutorGeneralInfo>();
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    TutorGeneralInfo tutor =child.getValue(TutorGeneralInfo.class);
+                    tutorArrayList.add(tutor);
+
+                }
+                activity.updateFromGetTutorList(tutorArrayList);
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
 
@@ -148,6 +186,41 @@ public class TutorGeneralInfo {
         myRef.setValue(tutorGeneralInfo);
 
 
+    }
+
+    public TutorGeneralInfo getTutorGeneralInfo(String tutorID , final TextView status , final TestActivity activity){
+
+        /*get tutorgeneralinfo of a particular tutor from database
+        * useful in tutor version app
+        * here method will be overridder on Activity parameter
+        * depending on how many activity are using this method
+         * one instance for each activity using this method*/
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("tutorGeneralInfo/"+tutorID);
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                TutorGeneralInfo tutorGeneralInfo =dataSnapshot.getValue(TutorGeneralInfo.class);
+                //status.setText("tutor : "+tutorGeneralInfo.getTutorID() +"\n" +tutorGeneralInfo.getTutorName()+"\n" +tutorGeneralInfo.getTutorEducation()+"\n" +tutorGeneralInfo.getTutorGender()+"\n" +tutorGeneralInfo.getTutorPoint());
+
+                Log.d(TAG, "getTutorGeneralInfo: In Event listnerf");
+                activity.updateFromGetTutorGnInfo(tutorGeneralInfo);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        Log.d(TAG, "getTutorGeneralInfo: In getTutorGeneralInfo");
+
+
+        return new TutorGeneralInfo();
     }
 
 
