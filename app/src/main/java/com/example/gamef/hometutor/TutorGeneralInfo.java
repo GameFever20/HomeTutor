@@ -130,7 +130,7 @@ public class TutorGeneralInfo {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("tutorGeneralInfo");
 
-        DatabaseReference myRef2 = myRef.orderByChild("tutorPoint").limitToFirst(20).getRef();
+        DatabaseReference myRef2 = myRef.orderByChild("tutorPoint").limitToLast(20).getRef();
 
         myRef2.addValueEventListener(new ValueEventListener() {
             @Override
@@ -155,12 +155,57 @@ public class TutorGeneralInfo {
             }
         });
 
-
-
-
-
         return new ArrayList<TutorGeneralInfo>();
     }
+
+    public void getTutorList(final int methodSpecifier , int limitProfile){
+
+        /*return list of all tutor from database whose profile are active
+        * number of profile can be limited by using int parameter*/
+
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("tutorGeneralInfo");
+
+        DatabaseReference myRef2 = myRef.orderByChild("tutorPoint").limitToLast(limitProfile).getRef();
+
+        myRef2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                ArrayList<TutorGeneralInfo> tutorArrayList =new ArrayList<TutorGeneralInfo>();
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    TutorGeneralInfo tutor =child.getValue(TutorGeneralInfo.class);
+                    tutorArrayList.add(tutor);
+
+                }
+
+                switch (methodSpecifier){
+                    case 1 :
+                        break;
+                    case 2 :
+                        break;
+                    case 3 :
+                        break;
+                    case 4 :
+                        break;
+                }
+
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
 
     public void getTutorInfo(){
 
